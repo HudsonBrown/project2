@@ -23,7 +23,7 @@ def server_thread():
     # Server Startup
     s = socket.socket()
     host = '127.0.0.1'  # Localhost
-    port = 5000
+    port = 5001
     s.bind((host, port))
     s.listen(5)
 
@@ -31,9 +31,9 @@ def server_thread():
         try:
             c, addr = s.accept()
             print('Got connection from', addr)
-            window["-CONNECTION-"].update("Connection Status: ✔️")  # Update connection status
+            window["-CONNECTION-"].update("Connection Status: ⚫️")  # Update connection status
         except socket.error:
-            window["-CONNECTION-"].update("Connection Status: ❌")  # Update connection status
+            window["-CONNECTION-"].update("Connection Status: ⚪")  # Update connection status
             continue
 
         if sending_data:
@@ -45,11 +45,11 @@ def server_thread():
 
         # Get Core Temperature from Pi (vcgencmd)
         core_temperature_raw = os.popen('vcgencmd measure_temp').readline()
-        core_temperature = float(core_temperature_raw.split('=')[1].split('\'')[0])
+        core_temperature = round(float(core_temperature_raw.split('=')[1].split('\'')[0]), 1)
 
         # Get Core Voltage from Pi (vcgencmd)
         core_voltage_raw = os.popen('vcgencmd measure_volts core').readline()
-        core_voltage = float(core_voltage_raw.split('=')[1].split('V')[0])
+        core_voltage = round(float(core_voltage_raw.split('=')[1].split('V')[0]), 1)
 
         # Get HDMI Clock from Pi (vcgencmd)
         hdmi_clock_raw = os.popen('vcgencmd measure_clock hdmi').readline()
@@ -61,7 +61,7 @@ def server_thread():
 
         # Get SDRAM Voltage from Pi (vcgencmd)
         sdram_voltage_raw = os.popen('vcgencmd measure_volts sdram_p').readline()
-        sdram_voltage = sdram_voltage_raw.split('=')[1].split('V')[0]
+        sdram_voltage = round(float(sdram_voltage_raw.split('=')[1].split('V')[0]), 1)
 
         # Increment the iteration counter
         iteration += 1
