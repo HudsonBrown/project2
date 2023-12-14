@@ -14,7 +14,7 @@ def receive_data():
     """ Receives data from decided host address and decodes it """
     s = socket.socket()
     host = '127.0.0.1'
-    port = 5000
+    port = 5001
     s.connect((host, port))
 
     received_data = s.recv(1024)
@@ -28,7 +28,7 @@ def receive_data():
 def main():
     """ Main program """
     layout = [
-        [sg.Text("Connection Status: ❌", key="-CONNECTION-", font=('Helvetica', 14))],
+        [sg.Text("Connection Status: ⚪", key="-CONNECTION-", font=('Helvetica', 14))],
         [sg.Text("Received data:", font=('Helvetica', 14))],
         [sg.Multiline("", size=(40, 10), key="-OUTPUT-", font=('Helvetica', 12))],
         [sg.Button("Exit")]
@@ -49,14 +49,14 @@ def main():
 
             if data is not None:
                 connected = True
-                window["-CONNECTION-"].update("Connection Status: ✔️")
+                window["-CONNECTION-"].update("Connection Status: ⚫")
 
         else:
             data = receive_data()
 
             if data is None:
                 connected = False
-                window["-CONNECTION-"].update("Connection Status: ❌")  # Shows appropriate connection status
+                window["-CONNECTION-"].update("Connection Status: ⚪")  # Shows appropriate connection status
                 continue
 
             window["-OUTPUT-"].update(value="")  # Clear previous data
